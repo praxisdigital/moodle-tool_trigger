@@ -67,11 +67,13 @@ $eventlist = \tool_monitor\eventlist::get_all_eventlist();
 // Group the events by plugin.
 $pluginlist = \tool_monitor\eventlist::get_plugin_list($eventlist);
 $plugineventlist = [];
-foreach ($pluginlist as $plugin => $pluginname) {
-    foreach ($eventlist[$plugin] as $event => $eventname) {
-        // Filter out events which cannot be triggered for some reason.
-        if (!$event::is_deprecated()) {
-            $plugineventlist[$event] = "${pluginname}: ${eventname}";
+foreach ($pluginlist as $plugintype) {
+    foreach ($plugintype as $plugin => $pluginname) {
+        foreach ($eventlist[$plugin] as $event => $eventname) {
+            // Filter out events which cannot be triggered for some reason.
+            if (!$event::is_deprecated()) {
+                $plugineventlist[$event] = "$pluginname: $eventname";
+            }
         }
     }
 }

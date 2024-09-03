@@ -84,7 +84,7 @@ class renderer extends \plugin_renderer_base {
         $url = new \moodle_url('/admin/tool/trigger/history.php', $searchparams);
         $renderable = new \tool_trigger\output\workflowhistory\workflowhistory_renderable('triggerhistory', $url, $searchparams, $download, 100);
 
-        $namefields = get_all_user_name_fields(true, 'u');
+        $namefields = implode(',', \core_user\fields::get_name_fields());
         $sqlfields = "tfh.*, {$namefields}";
         $sqlfrom = '{tool_trigger_workflow_hist} tfh LEFT JOIN {user} u ON tfh.userid = u.id';
         $sqlwhere = 'tfh.workflowid = :workflow';
@@ -274,7 +274,7 @@ class renderer extends \plugin_renderer_base {
     private function rerun_all_historic_button($workflowid) {
         $url = new \moodle_url('/admin/tool/trigger/history.php',
             ['action' => 'rerunallhist', 'sesskey' => sesskey(), 'id' => $workflowid, 'workflow' => $workflowid]);
-        $btn = new \single_button($url, get_string('rerunallhist', 'tool_trigger'), 'get', true);
+        $btn = new \single_button($url, get_string('rerunallhist', 'tool_trigger'), 'get', \single_button::BUTTON_PRIMARY);
         echo $this->render($btn);
     }
 
@@ -286,7 +286,7 @@ class renderer extends \plugin_renderer_base {
     private function rerun_all_current_button($workflowid) {
         $url = new \moodle_url('/admin/tool/trigger/history.php',
             ['action' => 'rerunallcurr', 'sesskey' => sesskey(), 'id' => $workflowid, 'workflow' => $workflowid]);
-        $btn = new \single_button($url, get_string('rerunallcurr', 'tool_trigger'), 'get', true);
+        $btn = new \single_button($url, get_string('rerunallcurr', 'tool_trigger'), 'get', \single_button::BUTTON_PRIMARY);
         echo $this->render($btn);
     }
 }

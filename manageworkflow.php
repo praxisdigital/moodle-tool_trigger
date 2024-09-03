@@ -37,12 +37,12 @@ $confirm = optional_param('confirm', false, PARAM_BOOL);
 $status = optional_param('status', 0, PARAM_BOOL);
 
 if (!in_array($action, ['delete', 'copy'])) {
-    print_error('invalidaction');
+    throw new moodle_exception('invalidaction');
 }
 
 $workflow = \tool_trigger\workflow_manager::get_workflow($workflowid);
 if (!$workflow) {
-    print_error('invaliditemid');
+    throw new moodle_exception('invaliditemid');
 }
 $workflowname = $workflow->get_name($context);
 

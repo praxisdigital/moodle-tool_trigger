@@ -44,6 +44,13 @@ class cohort_lookup_step extends base_lookup_step {
     private $outputprefix = null;
 
     /**
+     * User field.
+     *
+     * @var string
+     */
+    private $useridfield;
+
+    /**
      * The fields supplied by this step.
      * A string containing all the cohorts a user is assigned to.
      *

@@ -44,6 +44,9 @@ class numcompare_filter_step extends base_filter_step {
     const OPERATOR_GTE = '>=';
     const OPERATOR_GT = '>';
 
+    protected $field1;
+    protected $field2;
+    protected $operator;
 
 
     /**

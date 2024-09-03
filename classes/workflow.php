@@ -84,6 +84,11 @@ class workflow {
     public $numsteps;
 
     /**
+     * @var int
+     */
+    public $debug;
+
+    /**
      * Constructor.
      *
      * @param \stdClass $workflow
