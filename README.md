@@ -24,10 +24,12 @@ More Information on Moodle events can be found in the Moodle documentation at th
 ## Branches ##
 The following maps the plugin version to use depending on your Moodle version.
 
-| Moodle verion      | Branch             |
-| ------------------ | ------------------ |
-| Moodle 3.5 to 3.10 | MOODLE_35_STABLE   |
-| Moodle 3.11+       | MOODLE_311_STABLE  |
+| Moodle verion             | Branch            |
+|---------------------------|-------------------|
+| Moodle 3.5 to 3.10        | MOODLE_35_STABLE  |
+| Moodle 3.11 to Moodle 4.1 | MOODLE_311_STABLE |
+| Moodle 4.4+               | MOODLE_404_STABLE |
+
 
 ## Moodle Plugin Installation
 The following sections outline how to install the Moodle plugin.
