@@ -23,11 +23,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_trigger;
 
-global $CFG;
+class course_lookup_step_test extends \advanced_testcase {
 
-class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
+    /**
+     * Test user.
+     * @var
+     */
+    protected $user;
+
+    /**
+     * Test user.
+     * @var
+     */
+    protected $course;
+
+    /**
+     * Event for testing.
+     * @var \core\event\user_graded
+     */
+    private $event;
+
     /**
      * Create a "user_profile_viewed" event, of user1 viewing user2's
      * profile. And then run everything else as the cron user.
@@ -41,7 +58,7 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
 
         $this->event = \core\event\course_created::create([
             'objectid' => $this->course->id,
-            'context' => context_course::instance($this->course->id),
+            'context' => \context_course::instance($this->course->id),
             'other' => [
                 'shortname' => $this->course->shortname,
                 'fullname' => $this->course->fullname
@@ -49,7 +66,7 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
         ]);
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     /**
@@ -65,7 +82,7 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
         );
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
-        $context = context_course::instance($this->course->id);
+        $context = \context_course::instance($this->course->id);
 
         $this->assertTrue($status);
         $this->assertEquals($this->course->id, $stepresults['course_id']);
@@ -149,14 +166,14 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
         );
 
         if ($exception) {
-            $this->expectException('Error');
-            $this->expectExceptionMessageRegExp("/Specified courseid field not present in the workflow data:*/");
+            $this->expectException(\invalid_parameter_exception::class);
+            $this->expectExceptionMessageMatches("/Specified courseid field not present in the workflow data:*/");
         }
 
         list($statusresult, $stepresults) = $step->execute(null, null, $this->event, []);
 
         if ($status) {
-            $context = context_course::instance($this->course->id);
+            $context = \context_course::instance($this->course->id);
             $this->assertTrue($statusresult);
             $this->assertEquals($this->course->id, $stepresults['course_id']);
             $this->assertEquals($this->course->fullname, $stepresults['course_fullname']);
@@ -179,7 +196,7 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
-        $context = context_course::instance($this->course->id);
+        $context = \context_course::instance($this->course->id);
         $this->assertTrue($status);
         $this->assertEquals($this->course->id, $stepresults['course_id']);
         $this->assertEquals($this->course->fullname, $stepresults['course_fullname']);
@@ -199,7 +216,7 @@ class tool_trigger_course_lookup_step_testcase extends advanced_testcase {
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
-        $context = context_course::instance($this->course->id);
+        $context = \context_course::instance($this->course->id);
         $this->assertTrue($status);
         $this->assertEquals($this->course->id, $stepresults['course_id']);
         $this->assertEquals($this->course->fullname, $stepresults['course_fullname']);

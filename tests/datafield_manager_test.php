@@ -23,12 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once(__DIR__.'/fixtures/user_event_fixture.php');
 
-class tool_trigger_datafield_manager_testcase extends advanced_testcase {
+class datafield_manager_test extends \advanced_testcase {
     use \tool_trigger_user_event_fixture;
 
     /**
@@ -102,7 +104,7 @@ class tool_trigger_datafield_manager_testcase extends advanced_testcase {
             'nullvalue' => null,
             'emptyvalue' => '',
             'arrayvalue' => [],
-            'objectvalue' => new stdClass(),
+            'objectvalue' => new \stdClass(),
         ];
 
         $templatestring = 'Good tag: {tagexists}.

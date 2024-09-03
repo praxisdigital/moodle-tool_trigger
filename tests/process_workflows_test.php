@@ -22,9 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
+namespace tool_trigger;
 
 /**
  * Workflow form processing unit tests.
@@ -34,7 +32,33 @@ global $CFG;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class tool_trigger_process_workflow_testcase extends advanced_testcase {
+class process_workflows_test extends \advanced_testcase {
+
+    /**
+     * Test user.
+     * @var
+     */
+    protected $user;
+
+    /**
+     * Test context.
+     * @var
+     */
+    protected $context;
+
+    /**
+     * Test event.
+     * @var
+     */
+    protected $event;
+
+    /**
+     * Test event object.
+     * @var
+     */
+    protected $eventobj;
+
+
 
     public function setup():void {
         global $DB;
@@ -73,7 +97,7 @@ class tool_trigger_process_workflow_testcase extends advanced_testcase {
         $this->context = $context;
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
 
     }
 

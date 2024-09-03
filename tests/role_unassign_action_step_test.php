@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_trigger;
+
 /**
  * Tests for role_unassign_action_step.
  *
@@ -22,12 +24,7 @@
  * @author     Nicholas Hoobin <nicholashoobin@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
-
-class role_unassign_action_step_testcase extends advanced_testcase {
+class role_unassign_action_step_test extends \advanced_testcase {
 
     /**
      * Test user.
@@ -69,7 +66,7 @@ class role_unassign_action_step_testcase extends advanced_testcase {
         $this->user = $this->getDataGenerator()->create_user();
         $this->course = $this->getDataGenerator()->create_course();
         $this->roleid = $this->getDataGenerator()->create_role();
-        $this->context = context_course::instance($this->course->id);
+        $this->context = \context_course::instance($this->course->id);
 
         $this->setUser($this->user);
 
@@ -88,7 +85,7 @@ class role_unassign_action_step_testcase extends advanced_testcase {
         role_assign($this->roleid, $this->user->id, $this->context->id);
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     /**
@@ -157,8 +154,8 @@ class role_unassign_action_step_testcase extends advanced_testcase {
             ])
         );
 
-        $this->expectException('Error');
-        $this->expectExceptionMessageRegExp("/Specified userid field not present in the workflow data:*/");
+        $this->expectException(\invalid_parameter_exception::class);
+        $this->expectExceptionMessageMatches("/Specified userid field not present in the workflow data:*/");
         $step->execute(null, null, $this->event, []);
     }
 }

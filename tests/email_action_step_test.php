@@ -23,13 +23,21 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once(__DIR__.'/fixtures/user_event_fixture.php');
 
-class tool_trigger_email_action_step_testcase extends advanced_testcase {
+class email_action_step_test extends \advanced_testcase {
     use \tool_trigger_user_event_fixture;
+
+    /**
+     * Messages sink for testing.
+     * @var \phpunit_message_sink
+     */
+    private $sink;
 
     /**
      * Create a "user_profile_viewed" event, of user1 viewing user2's

@@ -22,9 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
+namespace tool_trigger;
 
 /**
  * Workflow manager unit tests.
@@ -33,7 +31,7 @@ global $CFG;
  * @copyright   Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_trigger_workflow_manager_testcase extends advanced_testcase {
+class workflow_manager_test extends \advanced_testcase {
 
     /**
      * Test getting step class names by step type.
@@ -66,6 +64,8 @@ class tool_trigger_workflow_manager_testcase extends advanced_testcase {
 
     /**
      * Test getting steps by step type.
+     *
+     * @runInSeparateProcess
      */
     public function test_get_steps_by_type() {
 

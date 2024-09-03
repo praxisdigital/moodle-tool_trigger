@@ -23,12 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once("$CFG->libdir/gradelib.php");
 
-class debounce_step_testcase extends advanced_testcase {
+class debounce_step_test extends \advanced_testcase {
     /**
      * The step to execute.
      *
@@ -40,6 +42,12 @@ class debounce_step_testcase extends advanced_testcase {
      * EventID to keep track of.
      */
     private $eventid;
+
+    /**
+     * Event for testing.
+     * @var \core\event\user_graded
+     */
+    private $event;
 
     /**
      * Create a "user_profile_viewed" event, of user1 viewing user2's
@@ -54,13 +62,13 @@ class debounce_step_testcase extends advanced_testcase {
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id);
 
-        $gradecategory = grade_category::fetch_course_category($course->id);
+        $gradecategory = \grade_category::fetch_course_category($course->id);
         $gradecategory->load_grade_item();
         $gradeitem = $gradecategory->grade_item;
 
         $gradeitem->update_final_grade($user->id, 10, 'gradebook');
 
-        $gradegrade = new grade_grade(array('userid' => $user->id, 'itemid' => $gradeitem->id), true);
+        $gradegrade = new \grade_grade(array('userid' => $user->id, 'itemid' => $gradeitem->id), true);
         $gradegrade->grade_item = $gradeitem;
 
         $this->event = \core\event\user_graded::create_from_grade($gradegrade);
@@ -76,7 +84,7 @@ class debounce_step_testcase extends advanced_testcase {
 
         // Add this step to the events table.
         $processor = new \tool_trigger\event_processor();
-        $entrymethod = new ReflectionMethod($processor, 'prepare_event');
+        $entrymethod = new \ReflectionMethod($processor, 'prepare_event');
         $entrymethod->setAccessible(true);
         $entry = $entrymethod->invoke($processor, $this->event);
         $this->eventid = $DB->insert_record('tool_trigger_events', $entry, true);

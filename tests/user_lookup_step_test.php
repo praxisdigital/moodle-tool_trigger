@@ -23,12 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once(__DIR__.'/fixtures/user_event_fixture.php');
 
-class tool_trigger_user_lookup_testcase extends advanced_testcase {
+class user_lookup_step_test extends \advanced_testcase {
     use \tool_trigger_user_event_fixture;
 
     /**

@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -36,7 +38,26 @@ require_once('tool_trigger_testcase.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class tool_trigger_event_processor_testcase extends tool_trigger_testcase {
+class event_processor_test extends \tool_trigger_testcase {
+
+    /**
+     * Event array.
+     * @var
+     */
+    protected $eventarr;
+
+    /**
+     * Test user.
+     * @var
+     */
+    protected $user;
+
+    /**
+     * Test context.
+     * @var
+     */
+    protected $context;
+
 
     public function setup():void {
         $this->resetAfterTest(true);
@@ -60,7 +81,7 @@ class tool_trigger_event_processor_testcase extends tool_trigger_testcase {
         $this->context = $context;
 
         // Run as the cron user.
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     public function tearDown():void {
@@ -84,7 +105,7 @@ class tool_trigger_event_processor_testcase extends tool_trigger_testcase {
         $event = \core\event\user_loggedin::create($this->eventarr);
 
         // We're testing a protected method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\event_processor', 'is_event_ignored');
+        $method = new \ReflectionMethod('tool_trigger\event_processor', 'is_event_ignored');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\event_processor, $event); // Get result of invoked method.
 
@@ -101,7 +122,7 @@ class tool_trigger_event_processor_testcase extends tool_trigger_testcase {
         $event = \core\event\user_loggedin::create($this->eventarr);
 
         // We're testing a protected method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\event_processor', 'is_event_ignored');
+        $method = new \ReflectionMethod('tool_trigger\event_processor', 'is_event_ignored');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\event_processor, $event); // Get result of invoked method.
 
@@ -115,7 +136,7 @@ class tool_trigger_event_processor_testcase extends tool_trigger_testcase {
         $event = \core\event\user_loggedin::create($this->eventarr);
 
         // We're testing a protected method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\event_processor', 'prepare_event');
+        $method = new \ReflectionMethod('tool_trigger\event_processor', 'prepare_event');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\event_processor, $event); // Get result of invoked method.
         $expected = unserialize($proxy['other']);

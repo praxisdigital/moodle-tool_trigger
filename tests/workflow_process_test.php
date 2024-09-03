@@ -14,17 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Workflow form processing unit tests.
- *
- * @package    tool_trigger
- * @copyright  Matt Porritt <mattp@catalyst-au.net>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
+namespace tool_trigger;
 
 /**
  * Workflow form processing unit tests.
@@ -33,7 +23,7 @@ global $CFG;
  * @copyright   Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_trigger_workflow_process_testcase extends advanced_testcase {
+class workflow_process_test extends \advanced_testcase {
 
     /**
      * Test workflow process form data

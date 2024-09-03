@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -27,7 +29,7 @@ require_once(__DIR__.'/fixtures/user_event_fixture.php');
  * @copyright  Catalyst IT, 2022
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
+class webservice_action_step_test extends \advanced_testcase {
     use \tool_trigger_user_event_fixture;
 
     /**
@@ -40,6 +42,7 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
 
     /**
      * Simple test, with a successful result.
+     * @runInSeparateProcess
      */
     public function test_with_valid_call_to_enrol_user() {
         global $DB;
@@ -58,7 +61,7 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
         $this->assertEquals(0, $adminuser->lastlogin);
 
         // Check if user is NOT enrolled yet.
-        $context = context_course::instance($this->course->id);
+        $context = \context_course::instance($this->course->id);
         $enrolled = is_enrolled($context, $this->user1->id);
         $this->assertFalse($enrolled);
 
@@ -70,7 +73,7 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
         $this->assertArrayNotHasKey('exception', $stepresults);
 
         // Check if user is now enrolled as expected, showing the call did indeed work as expected.
-        $context = context_course::instance($this->course->id);
+        $context = \context_course::instance($this->course->id);
         $enrolled = is_enrolled($context, $this->user1->id);
         $this->assertTrue($enrolled);
 
@@ -81,6 +84,7 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
 
     /**
      * Test when the username is not valid, so the step fails with an exception.
+     * @runInSeparateProcess
      */
     public function test_with_invalid_username() {
         $stepsettings = [
@@ -90,12 +94,13 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
                 '{"enrolments":{"0":{"roleid":"5","userid":' . $this->user1->id . ',"courseid":' . $this->course->id . '}}}',
         ];
         $step = new \tool_trigger\steps\actions\webservice_action_step(json_encode($stepsettings));
-        $this->expectException(dml_missing_record_exception::class);
+        $this->expectException(\dml_missing_record_exception::class);
         $step->execute(null, null, $this->event, []);
     }
 
     /**
      * Test with non_existent function
+     * @runInSeparateProcess
      */
     public function test_with_non_existent_function() {
         $adminuser = get_admin();
@@ -108,13 +113,14 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
         $step = new \tool_trigger\steps\actions\webservice_action_step(json_encode($stepsettings));
 
         // Manually catch the exception to check the message
-        $this->expectException('Error');
-        $this->expectExceptionMessageRegExp('/external_functions/');
+        $this->expectException(\dml_missing_record_exception::class);
+        $this->expectExceptionMessageMatches('/external_functions/');
         $step->execute(null, null, $this->event, []);
     }
 
     /**
      * Test with invalid function parameters
+     * @runInSeparateProcess
      */
     public function test_with_invalid_function_parameters() {
         $adminuser = get_admin();
@@ -126,9 +132,9 @@ class tool_trigger_webservice_action_step_testcase extends \advanced_testcase {
         ];
         $step = new \tool_trigger\steps\actions\webservice_action_step(json_encode($stepsettings));
 
-        $this->expectException('Error');
+        $this->expectException(\coding_exception::class);
         // Setup the expectations for exception format.
-        $this->expectExceptionMessageRegExp('/errorcode.*invalidparameter.*debuginfo.*enrolments/');
+        $this->expectExceptionMessageMatches('/errorcode.*invalidparameter.*debuginfo.*enrolments/');
         $step->execute(null, null, $this->event, []);
     }
 }
