@@ -40,6 +40,9 @@ if (!in_array($action, ['delete', 'copy'])) {
     throw new moodle_exception('invalidaction');
 }
 
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('admin');
+
 $workflow = \tool_trigger\workflow_manager::get_workflow($workflowid);
 if (!$workflow) {
     throw new moodle_exception('invaliditemid');
@@ -51,11 +54,10 @@ $url = new moodle_url(
     '/admin/tool/trigger/manageworkflow.php',
     ['workflowid' => $workflowid]
 );
-$PAGE->set_context($context);
-$PAGE->set_url($url);
-$PAGE->set_pagelayout('admin');
+
 $PAGE->set_title($workflowname);
 $PAGE->set_heading($workflowname);
+$PAGE->set_url($url);
 
 require_sesskey();
 
