@@ -1,4 +1,4 @@
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/catalyst/moodle-tool_trigger/ci.yml?branch=MOODLE_311_STABLE)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/catalyst/moodle-tool_trigger/ci.yml?branch=MOODLE_404_STABLE)
 
 
 # Event Trigger
