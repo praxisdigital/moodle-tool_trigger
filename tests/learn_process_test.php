@@ -22,9 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
+namespace tool_trigger;
 
 /**
  * Learn processor unit tests.
@@ -34,7 +32,7 @@ global $CFG;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class tool_trigger_learn_process_testcase extends advanced_testcase {
+class learn_process_test extends \advanced_testcase {
 
     public function setup():void {
         $this->resetAfterTest(true);
@@ -121,7 +119,7 @@ class tool_trigger_learn_process_testcase extends advanced_testcase {
         $expected = array('\core\event\fake_event', '\core\event\user_loggedout');  // Expected result.
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\learn_process', 'get_learnt_events');
+        $method = new \ReflectionMethod('tool_trigger\learn_process', 'get_learnt_events');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\learn_process); // Get result of invoked method.
 
@@ -144,7 +142,7 @@ class tool_trigger_learn_process_testcase extends advanced_testcase {
         $expected = array('\core\event\fake_event', '\core\event\fake_event');  // Expected result.
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\learn_process', 'get_learnt_records');
+        $method = new \ReflectionMethod('tool_trigger\learn_process', 'get_learnt_records');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\learn_process, '\core\event\fake_event'); // Get result of invoked method.
 
@@ -170,7 +168,7 @@ class tool_trigger_learn_process_testcase extends advanced_testcase {
         $expected = $this->get_event_fields();  // Expected result.
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\learn_process', 'convert_record_type');
+        $method = new \ReflectionMethod('tool_trigger\learn_process', 'convert_record_type');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\learn_process, $learntevent, false); // Get result of invoked method.
 
@@ -192,7 +190,7 @@ class tool_trigger_learn_process_testcase extends advanced_testcase {
         $expected['oher_foo'] = 'string';
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\learn_process', 'merge_records');
+        $method = new \ReflectionMethod('tool_trigger\learn_process', 'merge_records');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\learn_process, $processedrecords); // Get result of invoked method.
 
@@ -227,7 +225,7 @@ class tool_trigger_learn_process_testcase extends advanced_testcase {
         $expected = array_merge($processedrecord, $processedrecord2);
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('tool_trigger\learn_process', 'merge_json_fields');
+        $method = new \ReflectionMethod('tool_trigger\learn_process', 'merge_json_fields');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke(new \tool_trigger\learn_process, $record, $exists); // Get result of invoked method.
 

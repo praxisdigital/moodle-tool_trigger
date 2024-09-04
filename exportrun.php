@@ -35,7 +35,7 @@ $runid = required_param('run', PARAM_INT);
 
 $workflowdata = \tool_trigger\workflow_manager::export_workflow_and_run_history($workflowid, $runid);
 if (!$workflowdata) {
-    print_error('$workflowdata');
+    throw new moodle_exception('workflowdata');
 }
 
 $jsonexporter = new \tool_trigger\json\json_export($workflowdata);

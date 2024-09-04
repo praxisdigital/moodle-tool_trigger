@@ -23,11 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_trigger;
 
-global $CFG;
-
-class tool_trigger_fail_filter_step_testcase extends basic_testcase {
+class fail_filter_step_test extends \basic_testcase {
     public function test_execute() {
         $step = new \tool_trigger\steps\filters\fail_filter_step();
         list($status) = $step->execute(null, null, null, null);

@@ -33,7 +33,7 @@ $workflowid = required_param('workflowid', PARAM_INT);
 
 $workflowrecord = \tool_trigger\workflow_manager::get_workflow_data_with_steps($workflowid);
 if (!$workflowrecord) {
-    print_error('invaliditemid');
+    throw new moodle_exception('invaliditemid');
 }
 
 $jsonexporter = new \tool_trigger\json\json_export($workflowrecord);

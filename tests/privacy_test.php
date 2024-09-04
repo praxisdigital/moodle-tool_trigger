@@ -23,9 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use \tool_trigger\privacy\provider;
-use \core_privacy\local\request\approved_contextlist;
-use \core_privacy\local\request\approved_userlist;
+namespace tool_trigger;
+
+use tool_trigger\privacy\provider;
+use core_privacy\local\request\approved_userlist;
 
 /**
  * Privacy test for the event monitor
@@ -35,7 +36,7 @@ use \core_privacy\local\request\approved_userlist;
  * @copyright  2019 Matt Porritt <mattp@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_trigger_privacy_testcase extends advanced_testcase {
+class privacy_test extends \advanced_testcase {
 
     /**
      * Set up method.
@@ -65,7 +66,7 @@ class tool_trigger_privacy_testcase extends advanced_testcase {
         $this->assertEmpty($userlist);
 
         // Add test data to database.
-        $eventrecord = new stdClass();
+        $eventrecord = new \stdClass();
         $eventrecord->eventname = '\core\event\user_login_failed';
         $eventrecord->component = 'core';
         $eventrecord->action = 'failed';
@@ -110,7 +111,7 @@ class tool_trigger_privacy_testcase extends advanced_testcase {
         $this->setUser($user);
 
         // Add test data to database.
-        $eventrecord = new stdClass();
+        $eventrecord = new \stdClass();
         $eventrecord->eventname = '\core\event\user_login_failed';
         $eventrecord->component = 'core';
         $eventrecord->action = 'failed';

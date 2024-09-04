@@ -22,13 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
 require_once('tool_trigger_testcase.php');
 
-class tool_trigger_processor_helper_testcase extends tool_trigger_testcase {
+class processor_helper_test extends \tool_trigger_testcase {
 
     /**
      * Anonymous class for testing.
@@ -77,7 +79,7 @@ class tool_trigger_processor_helper_testcase extends tool_trigger_testcase {
         ];
 
         // Empty data.
-        $actual = $this->testclass->restore_event(new stdClass());
+        $actual = $this->testclass->restore_event(new \stdClass());
         $this->assertNull($actual);
 
         // Non-existing event.
@@ -120,7 +122,7 @@ class tool_trigger_processor_helper_testcase extends tool_trigger_testcase {
         $workflowid = $this->create_workflow();
         $steps = $DB->get_records('tool_trigger_steps', ['workflowid' => $workflowid]);
         foreach ($steps as $step) {
-            $result = $this->testclass->execute_step($step, new stdClass(), $event, []);
+            $result = $this->testclass->execute_step($step, new \stdClass(), $event, []);
             $this->assertCount(2, $result);
             $this->assertTrue($result[0]);
             $this->assertTrue(is_array($result[1]));

@@ -37,12 +37,15 @@ $confirm = optional_param('confirm', false, PARAM_BOOL);
 $status = optional_param('status', 0, PARAM_BOOL);
 
 if (!in_array($action, ['delete', 'copy'])) {
-    print_error('invalidaction');
+    throw new moodle_exception('invalidaction');
 }
+
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('admin');
 
 $workflow = \tool_trigger\workflow_manager::get_workflow($workflowid);
 if (!$workflow) {
-    print_error('invaliditemid');
+    throw new moodle_exception('invaliditemid');
 }
 $workflowname = $workflow->get_name($context);
 
@@ -51,11 +54,10 @@ $url = new moodle_url(
     '/admin/tool/trigger/manageworkflow.php',
     ['workflowid' => $workflowid]
 );
-$PAGE->set_context($context);
-$PAGE->set_url($url);
-$PAGE->set_pagelayout('admin');
+
 $PAGE->set_title($workflowname);
 $PAGE->set_heading($workflowname);
+$PAGE->set_url($url);
 
 require_sesskey();
 

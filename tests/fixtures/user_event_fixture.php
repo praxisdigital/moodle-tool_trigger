@@ -71,7 +71,7 @@ trait tool_trigger_user_event_fixture {
         $this->event->trigger();
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     /**

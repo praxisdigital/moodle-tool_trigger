@@ -41,7 +41,7 @@ class renderer extends \plugin_renderer_base {
      * @return string to display on the mangerules page.
      */
     protected function render_renderable(renderable $renderable) {
-        $o = $this->render_add_button($renderable->workflowid);
+        $o = $this->render_add_button();
         $o .= '&nbsp;';
         $o .= $this->render_import_button();
         $o .= $this->render_table($renderable);
@@ -69,14 +69,13 @@ class renderer extends \plugin_renderer_base {
     /**
      * Html to add a button for adding a new workflow.
      *
-     * @param int $workflowid The workflow the button applies too.
      * @return string html for the button.
      */
-    protected function render_add_button($workflowid) {
+    protected function render_add_button() {
         global $CFG;
 
         $button = \html_writer::tag('button', get_string('addworkflow', 'tool_trigger'), ['class' => 'btn btn-primary']);
-        $addurl = new \moodle_url($CFG->wwwroot. '/admin/tool/trigger/edit.php', array('workflowid' => $workflowid));
+        $addurl = new \moodle_url($CFG->wwwroot. '/admin/tool/trigger/edit.php', array('workflowid' => 0));
         return \html_writer::link($addurl, $button);
     }
 

@@ -23,13 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
+use tool_trigger\steps\filters\numcompare_filter_step;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once("$CFG->libdir/gradelib.php");
-use \tool_trigger\steps\filters\numcompare_filter_step;
 
-class tool_trigger_numcompare_filter_step_testcase extends advanced_testcase {
+class numcompare_filter_step_test extends \advanced_testcase {
+
+    /**
+     * Event for testing.
+     * @var \core\event\user_graded
+     */
+    private $event;
+
     /**
      * Create a "user_profile_viewed" event, of user1 viewing user2's
      * profile. And then run everything else as the cron user.
@@ -42,13 +52,13 @@ class tool_trigger_numcompare_filter_step_testcase extends advanced_testcase {
         $user = $this->getDataGenerator()->create_user();
         $this->getDataGenerator()->enrol_user($user->id, $course->id);
 
-        $gradecategory = grade_category::fetch_course_category($course->id);
+        $gradecategory = \grade_category::fetch_course_category($course->id);
         $gradecategory->load_grade_item();
         $gradeitem = $gradecategory->grade_item;
 
         $gradeitem->update_final_grade($user->id, 10, 'gradebook');
 
-        $gradegrade = new grade_grade(array('userid' => $user->id, 'itemid' => $gradeitem->id), true);
+        $gradegrade = new \grade_grade(array('userid' => $user->id, 'itemid' => $gradeitem->id), true);
         $gradegrade->grade_item = $gradeitem;
 
         $this->event = \core\event\user_graded::create_from_grade($gradegrade);

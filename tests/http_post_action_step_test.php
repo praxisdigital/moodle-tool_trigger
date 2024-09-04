@@ -23,22 +23,37 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_trigger;
 
-global $CFG;
-require_once($CFG->dirroot . '/admin/tool/trigger/guzzle/autoloader.php');
+class http_post_action_step_test extends \advanced_testcase {
 
-class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
+    /**
+     * Test user.
+     * @var
+     */
+    protected $user;
+
+    /**
+     * A list of sent requests.
+     * @var
+     */
+    protected $requestssent;
+
+    /**
+     * Test event.
+     * @var
+     */
+    protected $event;
 
     public function setup():void {
         $this->resetAfterTest(true);
 
-        $this->requests_sent = [];
+        $this->requestssent = [];
         $this->user = \core_user::get_user_by_username('admin');
         $this->event = \core\event\user_profile_viewed::create([
             'objectid' => $this->user->id,
             'relateduserid' => $this->user->id,
-            'context' => context_user::instance($this->user->id),
+            'context' => \context_user::instance($this->user->id),
             'other' => [
                 'courseid' => 1,
                 'courseshortname' => 'short name',
@@ -47,7 +62,7 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
         ]);
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     private function make_mock_http_handler($response) {
@@ -56,7 +71,7 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
             new \GuzzleHttp\Handler\MockHandler([$response])
         );
         $stack->push(
-            \GuzzleHttp\Middleware::history($this->requests_sent)
+            \GuzzleHttp\Middleware::history($this->requestssent)
         );
 
         return $stack;
@@ -133,7 +148,7 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
         $this->assertTrue($status);
-        $this->assertEquals(1, count($this->requests_sent));
+        $this->assertEquals(1, count($this->requestssent));
         $this->assertEquals(200, $stepresults['http_response_status_code']);
         $this->assertEquals('All good', $stepresults['http_response_status_message']);
         $this->assertEquals('OK', $stepresults['http_response_body']);
@@ -163,7 +178,7 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
         $this->assertTrue($status);
-        $this->assertEquals(1, count($this->requests_sent));
+        $this->assertEquals(1, count($this->requestssent));
         $this->assertEquals(404, $stepresults['http_response_status_code']);
         $this->assertEquals('Huh?', $stepresults['http_response_status_message']);
         $this->assertEquals(json_encode(false), $stepresults['http_response_body']);
@@ -201,10 +216,10 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
         list($status) = $step->execute(null, null, $this->event, $prevstepresults);
 
         $this->assertTrue($status);
-        $this->assertEquals(1, count($this->requests_sent));
+        $this->assertEquals(1, count($this->requestssent));
 
         // Inspect the (mock) requests sent, to check that the substitutions were successful.
-        $request = $this->requests_sent[0]['request'];
+        $request = $this->requestssent[0]['request'];
 
         // The datafield in the header line didn't need to be urlencoded, so it should be exactly the same.
         $this->assertEquals(
@@ -259,10 +274,10 @@ class tool_trigger_http_post_action_step_testcase extends advanced_testcase {
         list($status) = $step->execute(null, null, $this->event, $prevstepresults);
 
         $this->assertTrue($status);
-        $this->assertEquals(1, count($this->requests_sent));
+        $this->assertEquals(1, count($this->requestssent));
 
         // Inspect the (mock) requests sent, to check that the substitutions were successful.
-        $request = $this->requests_sent[0]['request'];
+        $request = $this->requestssent[0]['request'];
 
         // The datafield in the header line didn't need to be urlencoded, so it should be exactly the same.
         $this->assertEquals(

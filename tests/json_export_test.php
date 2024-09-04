@@ -22,9 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-global $CFG;
+namespace tool_trigger;
 
 /**
  * JSON export unit tests.
@@ -33,8 +31,7 @@ global $CFG;
  * @copyright   Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-class tool_trigger_json_export_testcase extends advanced_testcase {
+class json_export_test extends \advanced_testcase {
 
     public function setup():void {
         $this->resetAfterTest(true);
@@ -79,7 +76,7 @@ class tool_trigger_json_export_testcase extends advanced_testcase {
         $jsonclass = new \tool_trigger\json\json_export($workflowobj);
 
         // We're testing a private method, so we need to setup reflector magic.
-        $method = new ReflectionMethod('\tool_trigger\json\json_export', 'get_filename');
+        $method = new \ReflectionMethod('\tool_trigger\json\json_export', 'get_filename');
         $method->setAccessible(true); // Allow accessing of private method.
         $proxy = $method->invoke($jsonclass, $workflowobj->name, $now); // Get result of invoked method.
 

@@ -26,7 +26,6 @@ namespace tool_trigger\steps\actions;
 
 /**
  * HTTP action step class.
- *
  * @package    tool_trigger
  * @copyright  Matt Porritt <mattp@catalyst-au.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -51,6 +50,8 @@ class http_post_action_step extends base_action_step {
     protected $headers;
     protected $params;
     private $httphandler = null;
+    private $expectedresponse;
+    private $jsonencode;
 
     /**
      * The fields supplied by this step.
@@ -127,15 +128,11 @@ class http_post_action_step extends base_action_step {
      * @return array if execution was succesful and the response from the execution.
      */
     public function execute($step, $trigger, $event, $stepresults) {
-        global $CFG;
-        require_once($CFG->dirroot . '/admin/tool/trigger/guzzle/autoloader.php');
-
         $this->update_datafields($event, $stepresults);
 
         $headers = $this->render_datafields($this->headers);
         $headers = explode("\n", str_replace("\r\n", "\n", $headers));
-        $headers = \GuzzleHttp\headers_from_lines($headers);
-
+        $headers = \GuzzleHttp\Utils::headersFromLines($headers);
         // ... urlencode the values of any substitutions being placed into the URL
         // or the POST params.
         $urlencodecallback = function($v) {

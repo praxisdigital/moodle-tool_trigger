@@ -276,7 +276,7 @@ class event_processor {
      * history and auditing.
      *
      * @param int $workflowid The workflow id to record.
-     * @param stdClass $event the event that triggered this workflow.
+     * @param \stdClass $event the event that triggered this workflow.
      * @param int $attemptnum The number of attempts for this event.
      * @return int|null the id of the recorded workflow record or null.
      */
@@ -799,7 +799,7 @@ class event_processor {
      * Records a cancelled workflow, used in debouncing.
      *
      * @param int $workflowid
-     * @param stdClass $event
+     * @param \stdClass $event
      * @param int $runid
      * @param boolean $deferred
      * @return void

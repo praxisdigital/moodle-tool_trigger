@@ -23,11 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_trigger;
 
-global $CFG;
-
-class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
+class course_cat_lookup_step_test extends \advanced_testcase {
 
     /**
      * Test user.
@@ -61,11 +59,11 @@ class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
 
         $this->event = \core\event\course_category_created::create([
             'objectid' => $this->category->id,
-            'context' => context_coursecat::instance($this->category->id),
+            'context' => \context_coursecat::instance($this->category->id),
         ]);
 
         // Run as the cron user  .
-        cron_setup_user();
+        \core\cron::setup_user();
     }
 
     /**
@@ -105,7 +103,7 @@ class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
         );
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
-        $context = context_coursecat::instance($this->category->id);
+        $context = \context_coursecat::instance($this->category->id);
 
         $this->assertTrue($status);
         $this->assertEquals($this->category->id, $stepresults['category_id']);
@@ -191,14 +189,14 @@ class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
         );
 
         if ($exception) {
-            $this->expectException('Error');
-            $this->expectExceptionMessageRegExp("/Specified category field not present in the workflow data:*/");
+            $this->expectException(\invalid_parameter_exception::class);
+            $this->expectExceptionMessageMatches("/Specified category field not present in the workflow data:*/");
         }
 
         list($statusresult, $stepresults) = $step->execute(null, null, $this->event, []);
 
         if ($status) {
-            $context = context_coursecat::instance($this->category->id);
+            $context = \context_coursecat::instance($this->category->id);
             $this->assertTrue($statusresult);
             $this->assertEquals($this->category->id, $stepresults['category_id']);
             $this->assertEquals($this->category->name, $stepresults['category_name']);
@@ -221,7 +219,7 @@ class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
-        $context = context_coursecat::instance($this->category->id);
+        $context = \context_coursecat::instance($this->category->id);
         $this->assertTrue($status);
         $this->assertEquals($this->category->id, $stepresults['category_id']);
         $this->assertEquals($this->category->name, $stepresults['category_name']);
@@ -241,7 +239,7 @@ class tool_trigger_course_cat_lookup_step_testcase extends advanced_testcase {
 
         list($status, $stepresults) = $step->execute(null, null, $this->event, []);
 
-        $context = context_coursecat::instance($this->category->id);
+        $context = \context_coursecat::instance($this->category->id);
         $this->assertTrue($status);
         $this->assertEquals($this->category->id, $stepresults['category_id']);
         $this->assertEquals($this->category->name, $stepresults['category_name']);

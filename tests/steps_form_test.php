@@ -98,6 +98,7 @@ class tool_trigger_steps_form_testcase extends advanced_testcase {
      * @param string $stepclass
      *
      * @dataProvider provide_steps
+     * @runInSeparateProcess
      */
     public function test_step_form($steptype, $stepclass) {
         global $PAGE;

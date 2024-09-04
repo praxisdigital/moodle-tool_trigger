@@ -23,18 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_trigger;
 
-global $CFG;
-
-class tool_trigger_logdump_action_step_testcase extends basic_testcase {
+class logdump_action_step_test extends \basic_testcase {
     public function test_execute() {
 
         // Don't overload var_dump by xdebug to solve the unit test when we run it with xdebug.
         ini_set('xdebug.overload_var_dump', 0);
 
         $user = \core_user::get_user_by_username('admin');
-        $context = context_user::instance($user->id);
+        $context = \context_user::instance($user->id);
         $event = \core\event\user_profile_viewed::create([
             'objectid' => $user->id,
             'relateduserid' => $user->id,

@@ -90,7 +90,6 @@ class renderable extends \table_sql implements \renderable {
         $this->pageable(true);
         $this->is_downloadable(false);
         $this->define_baseurl($url);
-        $this->workflowid = 0;
     }
 
     /**

@@ -23,15 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_trigger;
+
+use tool_trigger\steps\filters\stringcompare_filter_step;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once(__DIR__.'/fixtures/user_event_fixture.php');
 
-use \tool_trigger\steps\filters\stringcompare_filter_step;
 
-class tool_trigger_stringcompare_filter_step_testcase extends advanced_testcase {
+class stringcompare_filter_step_test extends \advanced_testcase {
     use \tool_trigger_user_event_fixture;
+
 
     /**
      * Create a "user_profile_viewed" event, of user1 viewing user2's

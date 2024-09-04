@@ -28,9 +28,18 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->dirroot.'/cohort/lib.php');
 
 class assign_cohort_action_step extends base_action_step {
-
-
     use \tool_trigger\helper\datafield_manager;
+
+    /** User field.
+     * @var int
+     */
+    protected $useridfield;
+
+    /**
+     * Cohort field.
+     * @var int
+     */
+    protected $cohortidfield;
 
     /**
      * The fields supplied by this step.

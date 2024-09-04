@@ -102,6 +102,13 @@ class stringcompare_filter_step extends base_filter_step {
     protected $wantmatch = true;
 
     /**
+     * Error on fail.
+     *
+     * @var bool
+     */
+    protected $erroronfail;
+
+    /**
      * {@inheritDoc}
      * @see \tool_trigger\steps\base\base_step::init()
      */
