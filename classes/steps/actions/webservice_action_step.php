@@ -16,9 +16,7 @@
 
 namespace tool_trigger\steps\actions;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->libdir . '/externallib.php');
+use core_external\external_api;
 
 /**
  * Webservice action step class.
@@ -113,7 +111,7 @@ class webservice_action_step extends base_action_step {
         $params = $this->render_datafields($this->params);
 
         // Execute the provided function name passing with the given parameters.
-        $response = \external_api::call_external_function($functionname, json_decode($params, true));
+        $response = external_api::call_external_function($functionname, json_decode($params, true));
         return $response;
     }
 
@@ -248,7 +246,7 @@ class webservice_action_step extends base_action_step {
         if (!empty($data['functionname'])) {
             try {
                 $errorfield = 'functionname';
-                $function = \external_api::external_function_info($data['functionname']);
+                $function = external_api::external_function_info($data['functionname']);
 
                 $errorfield = 'params';
 
@@ -276,7 +274,7 @@ class webservice_action_step extends base_action_step {
                 }
 
                 // Execute the provided function name passing with the given parameters.
-                // $response = \external_api::call_external_function($functionname, json_decode($params, true));
+                // $response = external_api::call_external_function($functionname, json_decode($params, true));
                 // Check if the provided function parameters are valid.
                 call_user_func(
                     [$function->classname, 'validate_parameters'],
