@@ -155,7 +155,7 @@ class user_lookup_step extends base_lookup_step {
         $stepresults[$this->outputprefix . 'fullname'] = fullname($userdata);
 
         // Get custom profile_fields if any.
-        profile_load_custom_fields($userdata);
+        $userdata->profile = (array)profile_user_record($userdata->id, false);
         if (!empty($userdata->profile)) {
             foreach ($userdata->profile as $shortname => $value) {
                 $stepresults[$this->outputprefix . $shortname] = $value;
@@ -214,7 +214,7 @@ class user_lookup_step extends base_lookup_step {
      * @return array $stepfields The fields this step provides.
      */
     public static function get_fields() {
-        $customfields = profile_get_custom_fields(true);
+        $customfields = profile_get_custom_fields();
         $customfieldoptions = array_column($customfields, 'shortname', 'shortname');
 
         return self::$stepfields + $customfieldoptions;
